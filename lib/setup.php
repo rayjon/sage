@@ -47,6 +47,10 @@ function setup() {
   // Use main stylesheet for visual editor
   // To add custom styles edit /assets/styles/layouts/_tinymce.scss
   add_editor_style(Assets\asset_path('styles/main.css'));
+  
+  // Remove CF7 Assets
+  add_filter( 'wpcf7_load_js', '__return_false' );
+  add_filter( 'wpcf7_load_css', '__return_false' );
 }
 add_action('after_setup_theme', __NAMESPACE__ . '\\setup');
 
