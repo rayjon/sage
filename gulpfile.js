@@ -162,6 +162,12 @@ var writeToManifest = function(directory) {
 // ## Gulp tasks
 // Run `gulp -T` for a task summary
 
+// Plumber error handler
+var onError = function (err) {
+  console.log(err.toString());
+  this.emit('end');
+};
+
 // ### Styles
 // `gulp styles` - Compiles, combines, and optimizes Bower CSS and project CSS.
 // By default this task will only log a warning if a precompiler error is
@@ -176,7 +182,11 @@ gulp.task('styles', ['wiredep'], function() {
         this.emit('end');
       });
     }
-    merged.add(gulp.src(dep.globs, {base: 'styles'})
+    merged.add(gulp.src(dep.globs, {
+        base: 'styles'
+      }).pipe(plumber({
+        errorHandler: onError
+      }))
       .pipe(cssTasksInstance));
   });
   return merged
